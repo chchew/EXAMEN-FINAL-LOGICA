@@ -1,3 +1,10 @@
+#Kevin Macario 17369
+#David Valenzuela
+#Carlos Chew
+
+#PROYECTO LOGICA MATEMATICA
+#MAQUINA DE TURING
+
 import re
 
 
@@ -25,6 +32,16 @@ def split_tape(Tu):
     matchET = re.search(reT, Tu)
     matchEZ = re.search(reZ, Tu)
     return (matchET.group(0), '0'+matchEZ.group(0))
+
+def readTxt(name):
+    cadena = []
+    with open (name, 'rt') as myfile:
+        for myline in myfile:
+            length = len(myline)
+            myline1 = myline[:length -1]
+            myline1.split("\n")
+            cadena.append(myline1)
+        return cadena
 
 if __name__ == "__main__":
     if(is_valid_input(mt1)):
