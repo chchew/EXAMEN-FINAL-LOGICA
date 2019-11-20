@@ -7,14 +7,11 @@
 
 import re
 
+file_list= ['MT1.txt', 'MT2.txt', 'MT3.txt', 'MT4.txt']
 
-mt1 = '00010001010000101000110000100010000100010001100001001000001000100110000101000001010011000001000100000100010011000001010101011100010001001000101'
-
-class sigma(object):
-
-    def __init__():
-        """
-        """
+def pprint(*args):
+    for arg in args:
+        print(arg)
 
 def is_valid_input(Tu):
     """
@@ -76,34 +73,68 @@ def find_transition_fun(transitions, current_state, entry):
         return None
 
 def print_tapes(t1, t2, t3):
-    print('tape 1:\n', t1)
-    print('tape 2:\n', t2)
-    print('tape 3:\n', t3)
+    pprint('tape 1:', t1)
+    pprint('tape 2:', t2)
+    pprint('tape 3:', t3)
 
 def print_line():
-    print('-'*50)
-    
+    pprint('-'*50)
+
+def entries_to_tape(entries, thead):
+    str = ''
+    for i in range(0, len(entries)):
+        if i == thead:
+            str += 'q'
+        str += entries[i] + '1'
+    return str
 
 if __name__ == "__main__":
     #step 1
-    if(is_valid_input(mt1)):
-        print('Step 1:')
-        tape1 = mt1
-        tape2 = 'UqU'
-        tape3 = 'UqU'
-        print_tapes(tape1, tape2, tape3)
-        print_line()
-        #Step 2
-        print('Step 2:')
-        tapes = split_tape(mt1)
-        tape1, tape2 = split_tape(mt1)
-        print_tapes(tape1, tape2, tape3)
-        print_line()
-        #Step 3
-        print('Step 2:')
-        tape1, tape3 = get_initial_state(tape1)
-        print_tapes(tape1, tape2, tape3)
-        print_line()
-        #step 4 - n
-        transitions = get_transitions(tape1)
-        
+    for file in file_list:
+        mt1 = readTxt(file)[-1]
+        if(is_valid_input(mt1)):
+            pprint('Paso 1:')
+            tape1 = mt1
+            tape2 = 'UqU'
+            tape3 = 'UqU'
+            print_tapes(tape1, tape2, tape3)
+            print_line()
+            #Step 2
+            pprint('Paso 2:')
+            tapes = split_tape(mt1)
+            tape1, tape2 = split_tape(mt1)
+            print_tapes(tape1, tape2, tape3)
+            print_line()
+            #Step 3
+            pprint('Paso 3:')
+            tape1, tape3 = get_initial_state(tape1)
+            print_tapes(tape1, tape2, tape3)
+            #step 4 - n
+            step = 4
+            transitions = get_transitions(tape1)
+            entries = get_entries(tape2)
+            t2Head = 0
+            print_line()
+            while True:
+                pprint(f'Paso {step}:')
+                pprint(f'Busca la transicion con estados {tape3} y letra {entries[t2Head]} en la cinta 1')
+                print_tapes(tape1, entries_to_tape(entries, t2Head), tape3)
+                fun = find_transition_fun(transitions, tape3, entries[t2Head])
+                if not fun:
+                    pprint('Halt now')
+                    break
+                _, _, q, b, d = fun
+                tape3 = q
+                entries[t2Head] = b
+                t2Head = t2Head + 1 if d == '000' else t2Head - 1 if d == '00' else t2Head
+                print_tapes(tape1, entries_to_tape(entries, t2Head), tape3)
+                print_line()
+                if(q == '0' or q == '00'):
+                    tape1 = '1'.join(entries)
+                    tape2 = '1'.join(entries)
+                    break
+                else:
+                    step += 1
+                if step > 100:
+                    break;
+            print_tapes(tape1, tape2, tape3)
