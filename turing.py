@@ -8,10 +8,12 @@
 import re
 
 file_list= ['MT1.txt', 'MT2.txt', 'MT3.txt', 'MT4.txt']
+f = ''
 
 def pprint(*args):
-    for arg in args:
-        print(arg)
+    string = '\n'.join(args)
+    print(string)
+    f.write('\n'+string)
 
 def is_valid_input(Tu):
     """
@@ -73,12 +75,12 @@ def find_transition_fun(transitions, current_state, entry):
         return None
 
 def print_tapes(t1, t2, t3):
-    pprint('tape 1:', t1)
-    pprint('tape 2:', t2)
-    pprint('tape 3:', t3)
+    pprint('Cinta 1:', t1)
+    pprint('Cinta 2:', t2)
+    pprint('Cinta 3:', t3)
 
 def print_line():
-    pprint('-'*50)
+    print('-'*50)
 
 def entries_to_tape(entries, thead):
     str = ''
@@ -91,6 +93,7 @@ def entries_to_tape(entries, thead):
 if __name__ == "__main__":
     #step 1
     for file in file_list:
+        f = open(f'{file[:3]}-out.txt', 'a')
         mt1 = readTxt(file)[-1]
         if(is_valid_input(mt1)):
             pprint('Paso 1:')
@@ -138,3 +141,5 @@ if __name__ == "__main__":
                 if step > 100:
                     break;
             print_tapes(tape1, tape2, tape3)
+            f.close()
+
