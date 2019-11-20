@@ -7,6 +7,7 @@
 
 import re
 
+file= open("out.txt", "w+")
 
 mt1 = '00010001010000101000110000100010000100010001100001001000001000100110000101000001010011000001000100000100010011000001010101011100010001001000101'
 
@@ -59,27 +60,40 @@ def get_entries(tape2):
     match = re.search(regex, tape2)
     return match.group(0).split('1')
 
+
 def print_tapes(t1, t2, t3):
     print('tape 1:\n', t1)
     print('tape 2:\n', t2)
     print('tape 3:\n', t3)
 
+
 def print_line():
     print('-'*50)
-    
+
 
 if __name__ == "__main__":
     #step 1
     if(is_valid_input(mt1)):
         print('Step 1:')
+        file.write('Step 1:\n')
         tape1 = mt1
+        file.write('tape 1: '+tape1+ '\n')
         tape2 = 'UqU'
+        file.write('tape 2: '+tape2+ '\n')
         tape3 = 'UqU'
+        file.write('tape 3: '+tape3+ '\n')
         print_tapes(tape1, tape2, tape3)
+        #Print lines
         print_line()
+        file.write('-'*50 + '\n')
         #Step 2
         print('Step 2:')
+        file.write('Step 2:\n')
         tapes = split_tape(mt1)
+        file.write(str(tapes))
         tape1, tape2 = split_tape(mt1)
+        file.write(tape3)
         print_tapes(tape1, tape2, tape3)
 
+
+file.close()
