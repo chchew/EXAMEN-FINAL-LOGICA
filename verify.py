@@ -59,6 +59,22 @@ def get_entries(tape2):
     match = re.search(regex, tape2)
     return match.group(0).split('1')
 
+def get_initial_state(tape1):
+    match = re.search('^0+', tape1)
+    return re.sub('^(0+)(?:1)', '', tape1), match.group(0)
+
+def get_transitions(tape1):
+    regex = '(0+)1(0+)1(0+)1(0+)1(0+)1'
+    match = re.findall(regex, tape1)
+    return match
+
+def find_transition_fun(transitions, current_state, entry):
+    for fun in transitions:
+        if fun[0] == current_state and fun[1] == entry:
+            return fun
+    else:
+        return None
+
 def print_tapes(t1, t2, t3):
     print('tape 1:\n', t1)
     print('tape 2:\n', t2)
@@ -82,4 +98,12 @@ if __name__ == "__main__":
         tapes = split_tape(mt1)
         tape1, tape2 = split_tape(mt1)
         print_tapes(tape1, tape2, tape3)
-
+        print_line()
+        #Step 3
+        print('Step 2:')
+        tape1, tape3 = get_initial_state(tape1)
+        print_tapes(tape1, tape2, tape3)
+        print_line()
+        #step 4 - n
+        transitions = get_transitions(tape1)
+        
